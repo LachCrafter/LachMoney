@@ -1,0 +1,10 @@
+# Messages config
+# We use the MiniMessages format, read more about it here: https://docs.advntr.dev/minimessage/format.html
+
+no_permission: "<red>You don't have permission to use this command."
+
+transfer:
+  successful: "<green>You successfully transferred %amount% to %receiver%."
+  too_expensive: "<red>You don't have enough money to transfer!"
+
+player_balance: "<gold>You currently have <red>%amount%</red> in your wallet."
