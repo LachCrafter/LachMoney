@@ -1,0 +1,4 @@
+name: LachMoney
+version: '1.0-SNAPSHOT'
+main: de.lachcrafter.lachMoney.LachMoney
+api-version: '1.21'
