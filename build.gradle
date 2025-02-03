@@ -1,9 +1,10 @@
 plugins {
     id 'java'
+    id 'xyz.jpenilla.run-paper' version '2.3.1'
 }
 
 group = 'de.lachcrafter'
-version = '1.0-SNAPSHOT'
+version = project.version
 
 repositories {
     mavenCentral()
@@ -46,4 +47,9 @@ processResources {
     filesMatching('paper-plugin.yml') {
         expand props
     }
+}
+
+runServer {
+    minecraftVersion("1.21.4")
+    jvmArgs("-DPaper.IgnoreJavaVersion=true", "-Dcom.mojang.eula.agree=true")
 }
