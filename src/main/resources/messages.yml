@@ -1,6 +1,8 @@
 # Messages config
 # We use the MiniMessages format, read more about it here: https://docs.advntr.dev/minimessage/format.html
 
+prefix: "<dark_gray>[<gold>LachMoney</gold>]"
+
 no_permission: "<red>You don't have permission to use this command."
 
 transfer:
