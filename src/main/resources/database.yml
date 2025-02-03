@@ -1,0 +1,15 @@
+# The Database type
+# Options: mysql, mongodb, sqlite
+db_type: "mysql"
+
+# You can ignore this when you use sqlite.
+auth:
+  username: "example"
+  password: "yourpassword"
+  port: 3306 # 27017 is the default port for mongodb
+  database: "lachmoney"
+  host: "example.com"
+
+# Define the filename if you use sqlite.
+sqlite:
+  file: "database.db"
