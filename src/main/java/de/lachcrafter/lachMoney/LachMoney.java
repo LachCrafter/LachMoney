@@ -14,6 +14,7 @@ public final class LachMoney extends JavaPlugin {
         // Plugin startup logic
         System.out.println("Initializing LachMoney...");
         regCommands();
+        getDataFolder().mkdirs();
     }
 
     @Override
