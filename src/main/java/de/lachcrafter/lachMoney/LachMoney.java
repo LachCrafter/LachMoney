@@ -1,5 +1,7 @@
 package de.lachcrafter.lachMoney;
 
+import de.lachcrafter.lachMoney.database.DatabaseManager;
+import de.lachcrafter.lachMoney.managers.ConfigManager;
 import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.plugin.lifecycle.event.LifecycleEventManager;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
@@ -9,17 +11,22 @@ import org.jetbrains.annotations.NotNull;
 
 public final class LachMoney extends JavaPlugin {
 
+    private ConfigManager configManager;
+    private DatabaseManager databaseManager;
+
     @Override
     public void onEnable() {
         // Plugin startup logic
         System.out.println("Initializing LachMoney...");
         regCommands();
         getDataFolder().mkdirs();
+        new DatabaseManager(this, configManager);
     }
 
     @Override
     public void onDisable() {
         // Plugin shutdown logic
+        databaseManager.closeConnection();
     }
 
     public void regCommands() {

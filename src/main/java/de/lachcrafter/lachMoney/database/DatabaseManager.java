@@ -1,0 +1,155 @@
+package de.lachcrafter.lachMoney.database;
+
+import de.lachcrafter.lachMoney.LachMoney;
+import de.lachcrafter.lachMoney.managers.ConfigManager;
+
+import java.io.File;
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
+public class DatabaseManager {
+
+    private final LachMoney plugin;
+    private final ConfigManager configManager;
+    private Connection connection;
+
+    public DatabaseManager(LachMoney plugin, ConfigManager configManager) {
+        this.plugin = plugin;
+        this.configManager = configManager;
+        switch (configManager.getDatabaseType()) {
+            case SQLITE -> initSQLite();
+            case MYSQL -> initMySQL();
+        }
+    }
+
+    private void initSQLite() {
+        plugin.getLogger().info("USING SQLITE");
+        File dataFolder = plugin.getDataFolder();
+        File dataFile = new File(dataFolder, "data.db");
+        if (!dataFile.exists()) {
+            try {
+                dataFile.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        String url = "jdbc:sqlite:" + dataFile;
+
+        try {
+            Class.forName("org.sqlite.JDBC");
+            this.connection = DriverManager.getConnection(url);
+            plugin.getLogger().info("Connected to SQLite database successfully");
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+            plugin.getLogger().info("Could not connect to SQLite database, disabling...");
+            plugin.getServer().getPluginManager().disablePlugin(plugin);
+        }
+        init();
+    }
+
+    private void initMySQL() {
+        plugin.getLogger().info("USING MYSQL");
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+
+            this.connection = DriverManager.getConnection("jdbc:mysql://" + configManager.getMySQLHost() + ":"
+                            + configManager.getMySQLPort() + "/"
+                            + configManager.getMySQLDatabase(),
+                    configManager.getMySQLUsername(),
+                    configManager.getMySQLPassword());
+            plugin.getLogger().info("Connected to MySQL database successfully");
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+            plugin.getLogger().info("Could not connect to MySQL database, disabling...");
+            plugin.getServer().getPluginManager().disablePlugin(plugin);
+        }
+        init();
+    }
+
+    public void init() {
+        String SQL = "CREATE TABLE IF NOT EXISTS player_data " +
+                "uuid VARCHAR(32)," +
+                "money VARCHAR(32)";
+        try {
+            PreparedStatement ps = connection.prepareStatement(SQL);
+            ps.executeUpdate();
+        } catch (SQLException e ) {
+            e.printStackTrace();
+        }
+    }
+
+    public void registerPlayer(String uuid) {
+        String checkSQL = "SELECT COUNT(*) FROM player_data WHERE uuid = ?";
+
+        try (PreparedStatement checkPs = connection.prepareStatement(checkSQL)) {
+            String SQL = "INSERT INTO player_data (uuid, money) VALUES (?, ?)";
+            checkPs.setString(1, uuid);
+            checkPs.setString(2, configManager.getStartMoney() + "");
+            checkPs.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void addMoney(String uuid, double amount) {
+        String SQL = "UPDATE player_data SET money = money + ? WHERE uuid = ?";
+        try (PreparedStatement ps = connection.prepareStatement(SQL)) {
+            ps.setString(1, amount + "");
+            ps.setString(2, uuid);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void removeMoney(String uuid, double amount) {
+        String SQL = "UPDATE player_data SET money = money - ? WHERE uuid = ?";
+        try (PreparedStatement ps = connection.prepareStatement(SQL)) {
+            ps.setString(1, amount + "");
+            ps.setString(2, uuid);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public long getMoney(String uuid) {
+        String SQL = "SELECT money FROM player_data WHERE uuid = ?";
+        try (PreparedStatement ps = connection.prepareStatement(SQL)) {
+            ps.setString(1, uuid);
+            var rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getLong("money");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public void setBalance(String uuid, long amount) {
+        String SQL = "UPDATE player_data SET money = ? WHERE uuid = ?";
+        try (PreparedStatement ps = connection.prepareStatement(SQL)) {
+            ps.setLong(1, amount);
+            ps.setString(2, uuid);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void closeConnection() {
+        try {
+            if (connection != null && !connection.isClosed()) {
+                connection.close();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+}
