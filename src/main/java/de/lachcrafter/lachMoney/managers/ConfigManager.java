@@ -70,6 +70,10 @@ public class ConfigManager {
         }
     }
 
+    public String getCurrency() {
+        return config.getString("currency", "$");
+    }
+
     public String getMySQLHost() {
         return database.getString("auth.host", "example.com");
     }
