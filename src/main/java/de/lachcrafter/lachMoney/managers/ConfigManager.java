@@ -75,23 +75,23 @@ public class ConfigManager {
     }
 
     public String getMySQLHost() {
-        return database.getString("auth.host", "example.com");
+        return database.getString("mysql.host", "example.com");
     }
 
     public String getMySQLDatabase() {
-        return database.getString("auth.database", "lachmoney");
+        return database.getString("mysql.database", "lachmoney");
     }
 
     public int getMySQLPort() {
-        return database.getInt("auth.port", 3306);
+        return database.getInt("mysql.port", 3306);
     }
 
     public String getMySQLUsername() {
-        return database.getString("auth.username", "lachmoney");
+        return database.getString("mysql.username", "lachmoney");
     }
 
     public String getMySQLPassword() {
-        return database.getString("auth.password", "yourpassword");
+        return database.getString("mysql.password", "yourpassword");
     }
 
     public enum DataBaseType {
