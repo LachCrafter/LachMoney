@@ -20,12 +20,12 @@ public class DatabaseManager {
         this.plugin = plugin;
         this.configManager = configManager;
         switch (configManager.getDatabaseType()) {
-            case SQLITE -> initSQLite();
-            case MYSQL -> initMySQL();
+            case SQLITE -> connectSQLite();
+            case MYSQL -> connectMySQL();
         }
     }
 
-    private void initSQLite() {
+    private void connectSQLite() {
         plugin.getLogger().info("USING SQLITE");
         File dataFolder = plugin.getDataFolder();
         File dataFile = new File(dataFolder, "data.db");
@@ -51,7 +51,7 @@ public class DatabaseManager {
         init();
     }
 
-    private void initMySQL() {
+    private void connectMySQL() {
         plugin.getLogger().info("USING MYSQL");
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
