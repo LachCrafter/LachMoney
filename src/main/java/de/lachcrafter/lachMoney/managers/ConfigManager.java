@@ -64,8 +64,8 @@ public class ConfigManager {
             case "mysql":
                 return DataBaseType.MYSQL;
             default:
-                plugin.getLogger().severe("Unknown Database defined in database.yml! Disabling to prevent data loss...");
-                plugin.getServer().shutdown();
+                plugin.getLogger().severe("Unknown Database type defined in database.yml! Disabling to prevent data loss...");
+                plugin.getServer().getPluginManager().disablePlugin(plugin);
                 return DataBaseType.UNKNOWN;
         }
     }
