@@ -5,10 +5,7 @@ import de.lachcrafter.lachMoney.managers.ConfigManager;
 
 import java.io.File;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class DatabaseManager {
 
@@ -141,6 +138,21 @@ public class DatabaseManager {
             e.printStackTrace();
         }
     }
+
+    public boolean checkPlayer(String uuid) {
+        String SQL = "SELECT COUNT(*) FROM player_data WHERE uuid = ?";
+        try (PreparedStatement ps = connection.prepareStatement(SQL)) {
+            ps.setString(1, uuid);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next() && rs.getInt(1) > 0) {
+                return true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
 
     public void closeConnection() {
         try {
