@@ -3,7 +3,7 @@
 db_type: "mysql"
 
 # You can ignore this when you use sqlite.
-auth:
+mysql:
   username: "example"
   password: "yourpassword"
   port: 3306
