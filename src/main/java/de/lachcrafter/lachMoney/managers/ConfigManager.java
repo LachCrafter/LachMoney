@@ -1,10 +1,13 @@
 package de.lachcrafter.lachMoney.managers;
 
 import de.lachcrafter.lachMoney.LachMoney;
+import de.lachcrafter.lachMoney.database.DatabaseManager;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 
@@ -12,13 +15,16 @@ public class ConfigManager {
 
     private final LachMoney plugin;
     private final MiniMessage mm = MiniMessage.miniMessage();
+    private final DatabaseManager databaseManager;
 
     private FileConfiguration config;
     private FileConfiguration database;
     private FileConfiguration messages;
 
-    public ConfigManager(LachMoney plugin) {
+    public ConfigManager(LachMoney plugin, DatabaseManager databaseManager) {
         this.plugin = plugin;
+        this.databaseManager = databaseManager;
+        loadConfig();
     }
 
     public void loadConfig() {
@@ -49,6 +55,11 @@ public class ConfigManager {
 
     public Component getNoPermissionMessage() {
         return mm.deserialize(messages.getString("no-permission", "<red>You don't have permission to use this command."));
+    }
+
+    public @NotNull Component getBalanceMessage(long amount) {
+        String rawMessage = messages.getString("player_balance", "<gold>You currently have <red><amount></red> in your wallet.");
+        return mm.deserialize(rawMessage, Placeholder.component("amount", Component.text(amount)));
     }
 
     public int getStartMoney() {

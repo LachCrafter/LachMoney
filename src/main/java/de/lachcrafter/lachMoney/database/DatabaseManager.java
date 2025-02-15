@@ -68,9 +68,9 @@ public class DatabaseManager {
     }
 
     public void init() {
-        String SQL = "CREATE TABLE IF NOT EXISTS player_data " +
-                "uuid VARCHAR(32)," +
-                "money VARCHAR(32)";
+        String SQL = "CREATE TABLE IF NOT EXISTS player_data (" +
+                "uuid TEXT PRIMARY KEY, " +
+                "money TEXT);";
         try {
             PreparedStatement ps = connection.prepareStatement(SQL);
             ps.executeUpdate();

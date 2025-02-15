@@ -1,6 +1,6 @@
 # The Database type
 # Options: mysql, sqlite
-db_type: "mysql"
+db_type: "sqlite"
 
 # You can ignore this when you use sqlite.
 mysql:
