@@ -58,7 +58,7 @@ public class ConfigManager {
         String rawMessage = messages.getString("player_balance", "<gold>You currently have <red><amount><currency></red> in your wallet.");
         return mm.deserialize(rawMessage,
                 Placeholder.component("amount", Component.text(amount)),
-                Placeholder.component("currency", Component.text(getCurrency())));
+                Placeholder.unparsed("currency", getCurrency()));
     }
 
     public int getStartMoney() {
@@ -80,7 +80,7 @@ public class ConfigManager {
         }
     }
 
-    public String getCurrency() {
+    public @NotNull String getCurrency() {
         return config.getString("currency", "$");
     }
 
