@@ -9,4 +9,4 @@ transfer:
   successful: "<green>You successfully transferred %amount% to %receiver%."
   too_expensive: "<red>You don't have enough money to transfer!"
 
-player_balance: "<gold>You currently have <red><amount></red> in your wallet."
+player_balance: "<gold>You currently have <red><amount><currency></red> in your wallet."

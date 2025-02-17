@@ -55,8 +55,10 @@ public class ConfigManager {
     }
 
     public @NotNull Component getBalanceMessage(long amount) {
-        String rawMessage = messages.getString("player_balance", "<gold>You currently have <red><amount></red> in your wallet.");
-        return mm.deserialize(rawMessage, Placeholder.component("amount", Component.text(amount)));
+        String rawMessage = messages.getString("player_balance", "<gold>You currently have <red><amount><currency></red> in your wallet.");
+        return mm.deserialize(rawMessage,
+                Placeholder.component("amount", Component.text(amount)),
+                Placeholder.component("currency", Component.text(getCurrency())));
     }
 
     public int getStartMoney() {
