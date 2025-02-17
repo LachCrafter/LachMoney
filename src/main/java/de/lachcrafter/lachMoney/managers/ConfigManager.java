@@ -1,7 +1,6 @@
 package de.lachcrafter.lachMoney.managers;
 
 import de.lachcrafter.lachMoney.LachMoney;
-import de.lachcrafter.lachMoney.database.DatabaseManager;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
@@ -15,15 +14,13 @@ public class ConfigManager {
 
     private final LachMoney plugin;
     private final MiniMessage mm = MiniMessage.miniMessage();
-    private final DatabaseManager databaseManager;
 
     private FileConfiguration config;
     private FileConfiguration database;
     private FileConfiguration messages;
 
-    public ConfigManager(LachMoney plugin, DatabaseManager databaseManager) {
+    public ConfigManager(LachMoney plugin) {
         this.plugin = plugin;
-        this.databaseManager = databaseManager;
         loadConfig();
     }
 

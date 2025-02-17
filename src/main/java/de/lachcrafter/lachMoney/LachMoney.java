@@ -21,7 +21,7 @@ public final class LachMoney extends JavaPlugin {
     public void onEnable() {
         // Plugin startup logic
         System.out.println("Initializing LachMoney...");
-        this.configManager = new ConfigManager(this, null);
+        this.configManager = new ConfigManager(this);
         this.databaseManager = new DatabaseManager(this, configManager);
         regCommands();
         File dataFolder = getDataFolder();
