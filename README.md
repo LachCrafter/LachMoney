@@ -1,5 +1,5 @@
 # LachMoney [Work in progress]
-> ⚠️ This plugin is currently not in the state of being production-ready! Current ETA is `February 22, 2025`.
+> ⚠️ This plugin is currently not in the state of being production-ready! Current ETA is `March 22, 2025`.
 
 LachMoney is a lightweight money Minecraft economy plugin with an extensive API.
 
