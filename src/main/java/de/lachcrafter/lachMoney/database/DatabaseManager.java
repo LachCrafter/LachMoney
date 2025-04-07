@@ -75,8 +75,8 @@ public class DatabaseManager {
         try {
             PreparedStatement ps = connection.prepareStatement(SQL);
             ps.executeUpdate();
-        } catch (SQLException e ) {
-            e.printStackTrace();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -89,7 +89,7 @@ public class DatabaseManager {
             checkPs.setString(2, configManager.getStartMoney() + "");
             checkPs.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 
@@ -100,7 +100,7 @@ public class DatabaseManager {
             ps.setString(2, uuid);
             ps.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 
@@ -137,7 +137,7 @@ public class DatabaseManager {
             ps.setString(2, uuid);
             ps.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 
@@ -150,7 +150,7 @@ public class DatabaseManager {
                 return true;
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
         return false;
     }
@@ -161,7 +161,7 @@ public class DatabaseManager {
                 connection.close();
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 
