@@ -82,12 +82,17 @@ public class DatabaseManager {
 
     public void registerPlayer(String uuid) {
         String checkSQL = "SELECT COUNT(*) FROM player_data WHERE uuid = ?";
-
         try (PreparedStatement checkPs = connection.prepareStatement(checkSQL)) {
-            String SQL = "INSERT INTO player_data (uuid, money) VALUES (?, ?)";
             checkPs.setString(1, uuid);
-            checkPs.setString(2, configManager.getStartMoney() + "");
-            checkPs.executeUpdate();
+            ResultSet rs = checkPs.executeQuery();
+            if (rs.next() && rs.getInt(1) == 0) {
+                String insertSQL = "INSERT INTO player_data (uuid, money) VALUES (?, ?)";
+                try (PreparedStatement insertPs = connection.prepareStatement(insertSQL)) {
+                    insertPs.setString(1, uuid);
+                    insertPs.setString(2, configManager.getStartMoney() + "");
+                    insertPs.executeUpdate();
+                }
+            }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -147,11 +152,13 @@ public class DatabaseManager {
             ps.setString(1, uuid);
             ResultSet rs = ps.executeQuery();
             if (rs.next() && rs.getInt(1) > 0) {
+                System.out.println("found!!!!!!!! player!!!!!!!!!!!!!!");
                 return true;
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+        System.out.println("NOT FOUDN PLAYER!!!!!!!!!!!!!!!!! >:(");
         return false;
     }
 

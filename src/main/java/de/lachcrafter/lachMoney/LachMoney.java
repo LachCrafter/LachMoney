@@ -25,6 +25,7 @@ public final class LachMoney extends JavaPlugin {
         this.configManager = new ConfigManager(this);
         this.databaseManager = new DatabaseManager(this, configManager);
         regCommands();
+        regListeners();
         File dataFolder = getDataFolder();
         if (!dataFolder.exists()) {
             dataFolder.mkdirs();
