@@ -12,4 +12,9 @@ public class Money {
     public Money(String amount) {
         this.amount = new BigDecimal(amount).setScale(DECIMALS, ROUNDING_MODE);
     }
+
+    @Override
+    public String toString() {
+        return String.format("%.2f", amount);
+    }
 }
