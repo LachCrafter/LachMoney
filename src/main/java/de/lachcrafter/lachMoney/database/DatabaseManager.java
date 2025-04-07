@@ -2,6 +2,7 @@ package de.lachcrafter.lachMoney.database;
 
 import de.lachcrafter.lachMoney.LachMoney;
 import de.lachcrafter.lachMoney.managers.ConfigManager;
+import de.lachcrafter.lachMoney.managers.Money;
 
 import java.io.File;
 import java.io.IOException;
@@ -92,7 +93,7 @@ public class DatabaseManager {
         }
     }
 
-    public void addMoney(String uuid, double amount) {
+    public void addMoney(String uuid, Money amount) {
         String SQL = "UPDATE player_data SET money = money + ? WHERE uuid = ?";
         try (PreparedStatement ps = connection.prepareStatement(SQL)) {
             ps.setString(1, amount + "");
@@ -103,29 +104,30 @@ public class DatabaseManager {
         }
     }
 
-    public void removeMoney(String uuid, double amount) {
+    public void removeMoney(String uuid, Money amount) {
         String SQL = "UPDATE player_data SET money = money - ? WHERE uuid = ?";
         try (PreparedStatement ps = connection.prepareStatement(SQL)) {
             ps.setString(1, amount + "");
             ps.setString(2, uuid);
             ps.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 
-    public long getMoney(String uuid) {
+    public Money getMoney(String uuid) {
         String SQL = "SELECT money FROM player_data WHERE uuid = ?";
         try (PreparedStatement ps = connection.prepareStatement(SQL)) {
             ps.setString(1, uuid);
             var rs = ps.executeQuery();
             if (rs.next()) {
-                return rs.getLong("money");
+                return new Money(rs.getBigDecimal("money").toString());
             }
+            return new Money("");
         } catch (SQLException e) {
             e.printStackTrace();
+            throw new RuntimeException(e);
         }
-        return 0;
     }
 
     public void setBalance(String uuid, long amount) {

@@ -54,10 +54,10 @@ public class ConfigManager {
         return mm.deserialize(config.getString(path, "message "+ path + "not found"));
     }
 
-    public @NotNull Component getBalanceMessage(long amount) {
+    public @NotNull Component getBalanceMessage(Money amount) {
         String rawMessage = messages.getString("player_balance", "<gold>You currently have <red><amount><currency></red> in your wallet.");
         return mm.deserialize(rawMessage,
-                Placeholder.component("amount", Component.text(amount)),
+                Placeholder.component("amount", Component.text(amount.toString())),
                 Placeholder.unparsed("currency", getCurrency()));
     }
 
