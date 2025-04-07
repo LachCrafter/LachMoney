@@ -50,8 +50,8 @@ public class ConfigManager {
         messages = YamlConfiguration.loadConfiguration(messagesFile);
     }
 
-    public Component getNoPermissionMessage() {
-        return mm.deserialize(messages.getString("no-permission", "<red>You don't have permission to use this command."));
+    public Component getMessage(String path) {
+        return mm.deserialize(config.getString(path, "message "+ path + "not found"));
     }
 
     public @NotNull Component getBalanceMessage(long amount) {
