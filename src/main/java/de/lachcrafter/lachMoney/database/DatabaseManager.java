@@ -152,13 +152,11 @@ public class DatabaseManager {
             ps.setString(1, uuid);
             ResultSet rs = ps.executeQuery();
             if (rs.next() && rs.getInt(1) > 0) {
-                System.out.println("found!!!!!!!! player!!!!!!!!!!!!!!");
                 return true;
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        System.out.println("NOT FOUDN PLAYER!!!!!!!!!!!!!!!!! >:(");
         return false;
     }
 
